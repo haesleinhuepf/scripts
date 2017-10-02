@@ -1,7 +1,16 @@
+# This script allows importing an image sequence of raw files 
+# from a folder. The user just needs to know/enter image width,
+# height and depth.
+#
+# Author: Robert Haase, http://github.com/haesleinhuepf
+# October 2017
+#
+#
 #@File(style="directory") folder
 #@int (value=512) imageWidth
 #@int (value=512) imageHeight
 #@int (value=101) imageDepth
+
 
 from ij import IJ;
 from ij import ImageJ;
