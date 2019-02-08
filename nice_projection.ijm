@@ -60,7 +60,7 @@ bNotFirstIt=false;
 print("Starting movie generation...");
 for (i=0;i<nSteps;i++)
 {
-	/*
+	
 	for (j=0;j<nSlices;j++)
 	{
 		//making shear transform with respect to stack center
@@ -73,8 +73,8 @@ for (i=0;i<nSteps;i++)
 		Ext.CLIJ_translate2D("plane1", "plane2", dx, dy);
 		// copy slice back
 		Ext.CLIJ_copySlice("plane2", "tempStack", j);
-	}*/
-	Ext.CLIJ_affineTransform(init, "tempStack", "center rotateX=" + nCurrStepX + " rotateY=" + nCurrStepY + " -center");
+	}
+	//Ext.CLIJ_affineTransform(init, "tempStack", "center rotateX=" + nCurrStepX + " rotateY=" + nCurrStepY + " -center");
 	
 	//adding some rotation
 	Ext.CLIJ_maximumZProjection("tempStack", "plane1");
