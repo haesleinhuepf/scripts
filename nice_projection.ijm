@@ -15,9 +15,9 @@ setBatchMode(true);
 //Dialog
 
 	Dialog.create("Tilt parameters:");
-	Dialog.addNumber("Tilt radius in X (px):", 20);
-	Dialog.addNumber("Tilt radius in Y (px):", -20);
-	Dialog.addNumber("Rotation angle:", 15); 
+	Dialog.addNumber("Tilt angle in X (deg):", 20);
+	Dialog.addNumber("Tilt angle in Y (deg):", -20);
+	Dialog.addNumber("Rotation angle (deg):", 15); 
 	Dialog.addNumber("Number of movie frames:", 40); 	
 	sZChoice=newArray("Last frame is top","First frame is top");
 	Dialog.addChoice("Z direction:", sZChoice); 
@@ -60,6 +60,7 @@ bNotFirstIt=false;
 print("Starting movie generation...");
 for (i=0;i<nSteps;i++)
 {
+	/*
 	for (j=0;j<nSlices;j++)
 	{
 		//making shear transform with respect to stack center
@@ -72,7 +73,8 @@ for (i=0;i<nSteps;i++)
 		Ext.CLIJ_translate2D("plane1", "plane2", dx, dy);
 		// copy slice back
 		Ext.CLIJ_copySlice("plane2", "tempStack", j);
-	}
+	}*/
+	Ext.CLIJ_affineTransform(init, "tempStack", "center rotateX=" + nCurrStepX + " rotateY=" + nCurrStepY + " -center");
 	
 	//adding some rotation
 	Ext.CLIJ_maximumZProjection("tempStack", "plane1");
