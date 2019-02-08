@@ -15,19 +15,20 @@ sMovieTitle=sTitle+"_tilt_movie";
 setBatchMode(true);
 
 //Dialog
-Dialog.create("Tilt parameters:");
-Dialog.addNumber("Tilt angle in X (deg):", 20);
-Dialog.addNumber("Tilt angle in Y (deg):", -20);
-Dialog.addNumber("Rotation angle (deg):", 15); 
-Dialog.addNumber("Number of movie frames:", 40); 	
-sZChoice=newArray("Last frame is top","First frame is top");
-Dialog.addChoice("Z direction:", sZChoice); 
-Dialog.show();
-nCurrStepX=Dialog.getNumber();
-nCurrStepY=Dialog.getNumber();
-nCurrRotAngle=0.5*Dialog.getNumber();
-nSteps=Dialog.getNumber();
-sChoice=Dialog.getChoice();
+
+	Dialog.create("Tilt parameters:");
+	Dialog.addNumber("Tilt radius in X (px):", 20);
+	Dialog.addNumber("Tilt radius in Y (px):", -20);
+	Dialog.addNumber("Rotation angle:", 15); 
+	Dialog.addNumber("Number of movie frames:", 40); 	
+	sZChoice=newArray("Last frame is top","First frame is top");
+	Dialog.addChoice("Z direction:", sZChoice); 
+	Dialog.show();
+	nCurrStepX=Dialog.getNumber();
+	nCurrStepY=Dialog.getNumber();
+	nCurrRotAngle=0.5*Dialog.getNumber();
+	nSteps=Dialog.getNumber();
+	sChoice=Dialog.getChoice();
 
 
 nStepX=(-2)*nCurrStepX/nSteps;
