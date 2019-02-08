@@ -1,6 +1,11 @@
-//ImageJ macro making a tilted movie out of stack
-//uses shear transform + rotation
-//Eugene Katrukha katpyxa at gmail.com
+// ImageJ macro making a tilted movie out of stack
+// uses shear transform + rotation
+// This is the GPU-accelerated version of the original. 
+// Activate the clij update site to get GPU support and 
+// make this macro run.
+// 
+// Eugene Katrukha katpyxa at gmail.com
+// Robert Haase rhaase at mpi-cbg.de
 requires("1.48h");
 
 sTitle=getTitle();
@@ -30,57 +35,58 @@ nStepY=(-2)*nCurrStepY/nSteps;
 
 nRotStep = (-2.0)*nCurrRotAngle/nSteps;
 
-init=getImageID();
+init=getTitle();
+
+// reserve the right amount of memory for the result image
+getDimensions(width, height, channels, depth, frames);
+newImage("target", "32-bit black", width, height, nSteps);
+newImage("plane1", "32-bit black", width, height, 1);
+newImage("plane2", "32-bit black", width, height, 1);
+newImage("tempStack", "32-bit black", width, height, depth);
+
+
+// init GPU
+run("CLIJ Macro Extensions", "cl_device=");
+Ext.CLIJ_clear();
+
+Ext.CLIJ_push(init);
+Ext.CLIJ_push("target");
+Ext.CLIJ_push("plane1");
+Ext.CLIJ_push("plane2");
+Ext.CLIJ_push("tempStack");
+
 
 bNotFirstIt=false;
 print("Starting movie generation...");
 for (i=0;i<nSteps;i++)
 {
-	run("Duplicate...", "duplicate");
-	copyx=getImageID();
-
 	for (j=0;j<nSlices;j++)
 	{
-		if(startsWith(sChoice, "Last"))
-		{	setSlice(nSlices-j);}
-			else {
-		setSlice(j+1);}
 		//making shear transform with respect to stack center
 		dx=2.*((j-nSlices*0.5)*nCurrStepX/nSlices);
 		dy=2.*((j-nSlices*0.5)*nCurrStepY/nSlices);
 		
-		runstring="x="+toString(dx)+" y="+toString(dy)+" interpolation=Bilinear slice";
-		run("Translate...", runstring);
-
+		// cut out slice
+		Ext.CLIJ_copySlice(init, "plane1", j);
+		// translate the plane
+		Ext.CLIJ_translate2D("plane1", "plane2", dx, dy);
+		// copy slice back
+		Ext.CLIJ_copySlice("plane2", "tempStack", j);
 	}
 	
 	//adding some rotation
-	run("Z Project...", "projection=[Max Intensity]");
-	runstring="angle="+toString(nCurrRotAngle)+" grid=1 interpolation=Bicubic";
-	run("Rotate... ", runstring);
-	if(bNotFirstIt)
-	{
-			sCurrTitle=sTitle+"_frame"+toString(i);
-			rename(sCurrTitle);
-			run("Concatenate...", "  title=["+sMovieTitle+"] image1=["+sMovieTitle+"] image2=["+sCurrTitle+"]");
-			sMovieID=getImageID();
-	}
-	else
-	{
-		rename(sMovieTitle);
-		sMovieID=getImageID();
-		bNotFirstIt=true;
-	}
-	//updating rotate/shear counters
+	Ext.CLIJ_maximumZProjection("tempStack", "plane1");
+	Ext.CLIJ_rotate2D("plane1", "plane2", nCurrRotAngle, true);
+
+	// copy the slice in the result stack
+	Ext.CLIJ_copySlice("plane2", "target", i);
+
 	nCurrStepX=nCurrStepX+nStepX;
 	nCurrStepY=nCurrStepY+nStepY;
 	nCurrRotAngle= nCurrRotAngle+nRotStep;
 	
-	selectImage(copyx);
-	close();
-	selectImage(init);
 	print("Frame " +toString(i+1) +" out of "+toString(nSteps));
 }
-selectImage(sMovieID);
+Ext.CLIJ_pull("target");
 setBatchMode(false);
 print("Done");
