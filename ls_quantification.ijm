@@ -3,12 +3,12 @@
 // Quantitative measurements in light sheet data
 // of Tribolium embryos
 //
-// Author: Robert Haase, Daniela Vorkel
+// Author: Robert Haase, Daniela Vorkel
 //         November 2019
 // ---------------------------------------------
 
-srcFolder = "C:/structure/data/2019-07-24-16-01-00-07-Nantes_Tribolium_nGFP_pole/stacks/C0opticsprefused/";
-targetFolder = "C:/Users/rhaase/Desktop/temp2/";
+srcFolder = "X:/IMAGING/archive_data_good/2019-07-16-13-30-14-91-Pau_Tribolium_nGFP_pole_/stacks/C0opticsprefused/";
+targetFolder = "D:/2019-07-16-13-30-14-91-Pau_Tribolium_nGFP_pole_/processed/";
 
 // Init GPU
 run("CLIJ Macro Extensions", "cl_device=");
@@ -21,7 +21,9 @@ if (File.exists(resultingCSVFile)) {
 	File.delete(resultingCSVFile);
 }
 
-File.append("boundingBoxX," + 
+File.append("i," +
+"filenane," + 
+"boundingBoxX," + 
 "boundingBoxY," + 
 "boundingBoxZ," + 
 "boundingBoxWidth," + 
@@ -29,18 +31,21 @@ File.append("boundingBoxX," +
 "boundingBoxDepth," + 
 "meanIntensity," + 
 "maximumIntensity," + 
-"varianceIntensity," + 
+"standardDeviationIntensity," + 
 "pixelCount", resultingCSVFile);
 
 
 fileList = getFileList(srcFolder);
-//for (i = 0; i < lengthOf(fileList); i ++) {
-for (i = 0; i < 500; i += 50) {
+Array.sort(fileList);
+for (i = 0; i < lengthOf(fileList); i += 1) {
+//for (i = 0; i < 500; i += 1) {
 
 	run ("Close All");
 	run("Clear Results");
+	Ext.CLIJ_clear();
 	
 	run("Raw...", "open=" + srcFolder + fileList[i] + " image=[16-bit Unsigned] width=1024 height=1024 number=1000 little-endian");
+	run("32-bit");
 	rename("original");
 	input = getTitle();
 	
@@ -70,12 +75,14 @@ for (i = 0; i < 500; i += 50) {
 	maximumIntensity = getResult("Max", nResults() - 1);
 
 	Ext.CLIJx_standardDeviationOfAllPixels(input);
-	varianceIntensity = getResult("Variance", nResults() - 1);
+	standardDeviationIntensity = getResult("StandardDeviation", nResults() - 1);
 
 	meanProjection = "meanProjection";
 	Ext.CLIJ_meanZProjection(input, meanProjection);
 
-	File.append(boundingBoxX + "," + 
+	File.append("" + i + "," + 
+		        fileList[i] + "," + 
+		        boundingBoxX + "," + 
 				boundingBoxY + "," + 
 				boundingBoxZ + "," + 
 				boundingBoxWidth + "," + 
@@ -83,7 +90,7 @@ for (i = 0; i < 500; i += 50) {
 				boundingBoxDepth + "," + 
 				meanIntensity + "," + 
 				maximumIntensity + "," + 
-				varianceIntensity + "," + 
+				standardDeviationIntensity + "," + 
 				pixelCount, resultingCSVFile);
 
 
@@ -92,7 +99,7 @@ for (i = 0; i < 500; i += 50) {
 	
 	
 
-	break;
+	//break;
 }
 run("Close All");
 print("bye");
