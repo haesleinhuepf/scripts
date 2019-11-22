@@ -73,15 +73,18 @@ resliced = "resliced";
 maxProjected = "maxProjected";
 resampled = "resampled";
 
-for (i = 0; i < lengthOf(stackFiles); i++) {
+numberOfFiles = lengthOf(stackFiles);
+for (i = 0; i < ; i++) {
+	print("" + i + "/" + numberOfFiles);
 	Ext.CLIJx_readRawImageFromDisc(input, stack_folder + stackFiles[i], width, height, depth, 16);
 	Ext.CLIJx_resample(input, resampled, voxelWidth, voxelHeight, voxelDepth, false);
 	Ext.CLIJ_resliceLeft(resampled, resliced);
 	Ext.CLIJ_maximumZProjection(resliced, maxProjected);
 	//Ext.CLIJ_pull(maxProjected);
 	Ext.CLIJx_saveAsTIF(maxProjected, output_folder + stackFiles[i] + ".tif");
-	break;
-	
+	//if (i > 5) {
+	//	break;
+	//}
 }
 
 Ext.CLIJ_reportMemory();
