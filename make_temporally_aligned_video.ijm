@@ -3,8 +3,13 @@
 //relevant_start_frame = 615;
 //input_folder = "C:/structure/data/2019-10-28-17-22-59-23-Finsterwalde_Tribolium_nGFP/";
 
+//relevant_start_frame = 280;
+//input_folder = "C:/structure/data/2019-11-13-12-26-11-88-Wolgast_Tribolium_nGFP_TMR/";
+
+
 relevant_start_frame = 280;
-input_folder = "C:/structure/data/2019-11-13-12-26-11-88-Wolgast_Tribolium_nGFP_TMR/";
+input_folder = "\\\\fileserver.mpi-cbg.de\\myersspimdata\\IMAGING\\archive_data_good\\2019-11-13-12-26-11-88-Wolgast_Tribolium_nGFP_TMR\\";
+sessionName = "Wolgast";
 
 datasetname = "C0opticsprefused";
 
@@ -28,6 +33,7 @@ start_time = 0;
 
 // read image folder and meta data files
 thumbnails = getFileList(thumbnails_folder);
+Array.sort(thumbnails);
 table = File.openAsString(input_folder + datasetname + ".index.txt");
 lines = split(table, "\n");
 for (l = relevant_start_frame; l < lengthOf(lines); l += 1) {
@@ -60,6 +66,7 @@ for (l = relevant_start_frame; l < lengthOf(lines); l += 1) {
 		Ext.CLIJ_release(slice);
 		
 		slice_count = slice_count + 1;
+		print(slice_count);
 		if (slice_count >= number_of_frames) {
 			break;
 		}
@@ -68,6 +75,7 @@ for (l = relevant_start_frame; l < lengthOf(lines); l += 1) {
 }
 
 Ext.CLIJ_pull(stack);
+rename(sessionName + "_temp_aligned";
 
 Ext.CLIJ_clear();
 
