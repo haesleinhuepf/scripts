@@ -1,9 +1,10 @@
-// CLIJ example macro: blur.ijm
+// CLIJ example macro: clij_weka.ijm
 //
-// This macro shows how to blur an image in the GPU.
+// This macro shows how to apply a WEKA model using
+// clijs plugin mechanism from macro.
 //
 // Author: Robert Haase
-// December 2018
+//         November 2019
 // ---------------------------------------------
 run("Close All");
 
