@@ -1,8 +1,11 @@
-// CLIJ example macro: bread_clij_weka_segmentation_prediction.ijm
+// CLIJ example macro: croissant_clij_weka_segmentation_prediction.ijm
 //
 // This macro shows how to use Weka Trainable Segmentation using CLIJ. 
 // Thanks to Christophe Leterrier for the idea:
 // https://twitter.com/christlet/status/1238595830468292615?s=20
+//
+// You think prediction is slow? Run it a second time ;-)
+// https://clij.github.io/clij-docs/macro_intro
 //
 // Author: Robert Haase
 //         March 2020
@@ -12,13 +15,13 @@
 run("Close All");
 
 // configure script
-path = "C:/structure/code/scripts/bread/"; 
+path = "C:/structure/code/scripts/croissant/"; 
 
 original = "original";
 prediction = "prediction";
 
 // load and prepare image data
-open(path + "bread.tif");
+open(path + "croissant.tif");
 run("32-bit");
 makeRectangle(1, 64, 564, 561);
 run("Crop");
@@ -69,7 +72,7 @@ Ext.CLIJ2_pull(feature_stack);
 // apply classifier, saved as .model.cl file
 print("Predicting");
 
-Ext.CLIJx_applyOCLWekaModel(feature_stack, prediction, path + "bread.model");
+Ext.CLIJx_applyOCLWekaModel(feature_stack, prediction, path + "croissant.model");
 
 print("Bye.");
 

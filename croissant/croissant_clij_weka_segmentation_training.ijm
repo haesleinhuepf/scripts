@@ -1,4 +1,4 @@
-// CLIJ example macro: bread_clij_weka_segmentation_training.ijm
+// CLIJ example macro: croissant_clij_weka_segmentation_training.ijm
 //
 // This macro shows how to use Weka Trainable Segmentation using CLIJ. 
 // Thanks to Christophe Leterrier for the idea:
@@ -12,13 +12,13 @@
 run("Close All");
 
 // configure script
-path = "C:/structure/code/scripts/bread/"; 
+path = "C:/structure/code/scripts/croissant/"; 
 
 original = "original";
 ground_truth = "ground_truth";
 
 // load and prepare image data
-open(path + "bread.tif");
+open(path + "croissant.tif");
 run("32-bit");
 makeRectangle(1, 64, 564, 561);
 run("Crop");
@@ -210,6 +210,6 @@ Ext.CLIJ2_pull(feature_stack);
 // train classifier, save it as .model and as .model.cl file
 print("Train");
 
-Ext.CLIJx_trainWekaModel(feature_stack, ground_truth, path + "bread.model");
+Ext.CLIJx_trainWekaModel(feature_stack, ground_truth, path + "croissant.model");
 
 print("Bye.");
