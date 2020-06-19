@@ -38,15 +38,17 @@ output = clij.create(input);
 slice = clij.create([input.getWidth(), input.getHeight()], input.getNativeType());
 stack = clij.create([input.getWidth(), input.getHeight(), input.getDepth() * magic_number], input.getNativeType());
 
-for shift in range(0, magic_number):
+
+for shift in range(0, magic_number):
 	
 	# apply a filter to the image using ClearCL / OpenCL
 	parameters = {
 		"src":input,
-		"dst":output,
+		"dst":output
+,
 		"shift":shift
 	};
-	clij.execute(filesPath + "psychodelicColorExchange.cl", "psychodelicColorExchange", parameters);
+	clij.execute(filesPath + "psychedelicColorExchange.cl", "psychodelicColorExchange", parameters);
 
 	for c in range(0, 3):
 		clij.op().copySlice(output, slice, c);
