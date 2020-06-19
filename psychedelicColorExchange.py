@@ -48,7 +48,7 @@ for shift in range(0, magic_number):
 ,
 		"shift":shift
 	};
-	clij.execute(filesPath + "psychedelicColorExchange.cl", "psychodelicColorExchange", parameters);
+	clij.execute(filesPath + "psychedelicColorExchange.cl", "psychedelicColorExchange", parameters);
 
 	for c in range(0, 3):
 		clij.op().copySlice(output, slice, c);
