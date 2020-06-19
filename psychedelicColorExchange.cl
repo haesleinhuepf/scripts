@@ -1,5 +1,5 @@
 
-__kernel void psychodelicColorExchange(
+__kernel void psychedelicColorExchange(
        DTYPE_IMAGE_IN_3D src,
        DTYPE_IMAGE_OUT_3D dst, 
 	   int shift
